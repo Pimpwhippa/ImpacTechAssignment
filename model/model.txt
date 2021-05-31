@@ -1,0 +1,5 @@
+docker build -t keras/model .
+docker run -it -v ${PWD}:/model --name=keras keras/model
+
+docker build -t keras/alone .
+docker run -it -v ${PWD}:/model --name=keras_alone keras/alone

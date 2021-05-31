@@ -1,0 +1,4 @@
+
+docker build -t dl_iris_dataset .
+docker run -it --name=iris dl_iris_dataset
+docker exec -it iris bash

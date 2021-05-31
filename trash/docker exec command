@@ -1,0 +1,5 @@
+docker exec -i \
+-t -u pimwipa:pimwipa google-drive \
+google-drive-ocamlfuse -f -headless \
+-id "752137976926-p2vugknhjo65431g38cbkma2kniknij7.apps.googleusercontent.com" \
+-secret "C4UtIAzOwP6hyrNOGGyND8Mf"

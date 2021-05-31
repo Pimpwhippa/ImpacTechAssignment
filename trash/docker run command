@@ -1,0 +1,20 @@
+docker run -d \
+--name google-drive \
+--user pimwipa:pimwipa \
+--security-opt apparmor:unconfined \
+--cap-add mknod \
+--cap-add sys_admin \
+--device=/dev/fuse \
+-v /https://drive.google.com/drive/u/0/my-drive:/mnt/google-drive:shared \
+googledrive
+
+#this works
+docker run -d \
+--name google-drive \
+--user pimwipa:pimwipa \
+--security-opt apparmor:unconfined \
+--cap-add mknod \
+--cap-add sys_admin \
+--device=/dev/fuse \
+-v /google-drive:/mnt/google-drive:shared \
+googledrive2:latest

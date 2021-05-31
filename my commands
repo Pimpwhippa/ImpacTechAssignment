@@ -1,0 +1,58 @@
+to install kind, i just open a newpc
+
+docker run -it --name=newpc ubuntu:20.04
+#right now cannot run inside docker container because inside docker there's no docker command
+cannot run kind because cannot run docker
+because it has to be outside docker
+have to have docker environment, in the same level
+
+wget https://golang.org/dl/go1.16.4.linux-amd64.tar.gz
+
+pimpwhippa@pimpwhippa-Aspire-E5-473G:~/Works/ImpactTech/kind$ 
+docker cp go1.16.4.linux-amd64.tar.gz 14cadd228908:/
+
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz
+root@14cadd228908:/# export PATH=$PATH:/usr/local/go/bin
+root@14cadd228908:/# go version
+
+apt-get update
+apt-get install make
+apt-get install git
+git clone https://github.com/kubernetes-sigs/kind.git
+cd kind
+make build
+
+kind: command not found
+
+export GOPATH="$HOME/go"
+
+PATH="$GOPATH/bin:$PATH"
+#root@14cadd228908:/# echo $GOPATH
+/root/go
+
+root@14cadd228908:/# ls
+bin   dev  go.mod                       home  lib    lib64   media  opt   root  sbin  sys  usr
+boot  etc  go1.16.4.linux-amd64.tar.gz  kind  lib32  libx32  mnt    proc  run   srv   tmp  var
+root@14cadd228908:/# cd kind
+root@14cadd228908:/kind# kind
+kind creates and manages local Kubernetes clusters using Docker container 'nodes'
+
+Usage:
+  kind [command]
+
+Available Commands:
+  build       Build one of [node-image]
+  completion  Output shell completion code for the specified shell (bash, zsh or fish)
+  create      Creates one of [cluster]
+  delete      Deletes one of [cluster]
+  export      Exports one of [kubeconfig, logs]
+  get         Gets one of [clusters, nodes, kubeconfig]
+  help        Help about any command
+  load        Loads images into nodes
+  version     Prints the kind CLI version
+
+root@14cadd228908:/kind# kind version
+kind v0.11.0 go1.16.4 linux/amd64
+
+
+
