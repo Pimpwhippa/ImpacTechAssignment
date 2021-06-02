@@ -15,3 +15,9 @@ def loss(model, x, y, training):
 
 l = loss(model, features, labels, training=False)
 print("Loss test: {}".format(l))
+
+
+def grad(model, inputs, targets):
+  with tf.GradientTape() as tape:
+    loss_value = loss(model, inputs, targets, training=True)
+  return loss_value, tape.gradient(loss_value, model.trainable_variables)

@@ -51,8 +51,107 @@ Available Commands:
   load        Loads images into nodes
   version     Prints the kind CLI version
 
+in docker have kind v0.11.0
 root@14cadd228908:/kind# kind version
 kind v0.11.0 go1.16.4 linux/amd64
+
+#on host machine itself, need to sudo snap install --classic go to have go installed
+
+sudo snap install go --classic
+go 1.16.3 from Michael Hudson-Doyle (mwhudson) installed
+
+in docker container doesn't have go, still can install kind
+outside the container, no go, no kind, why?
+it says so in the documentation
+
+on host, have kind v0.12.0-alpha
+pimpwhippa@pimpwhippa-Aspire-E5-473G:~/Works/ImpactTech/kind$ kind version
+kind v0.12.0-alpha go1.16.3 linux/amd64
+
+i have installed also kubernetes from source, but in a separate directory of kind
+and source of kubernetes has nothing to do with ${GOPATH}
+
+now after finish installation of go, kind, and kubectl on host, 
+i'll start playing with cluster that kind created
+kind create cluster
+now i get a cluster called kind
+and a Docker container called kind-control-plane
+
+now i'll add docker-image my-custom-image0 my-custom-image1 to my cluster
+kind load docker-image my-custom-image-0 my-custom-image-1
+
+i have prepared first 2 directories that will become docker containers according to the 5 tasks required
+storage and model
+each has a Dockerfile. 
+i'll build those dockerfiles into images and put as arg for kind load docker-image
+dl_iris_dataset and keras/alone:latest <-- only keras in the image, model is not inside image
+
+i can start using tensorflow and keras to build model inside the keras/alone container (keras_alone)
+so the command to add docker image to my cluster is
+
+https://kind.sigs.k8s.io/docs/user/quick-start/
+
+kind load docker-image dl_iris_dataset keras/alone:latest
+#shouldn't put latest if you don't need. so kind doesn't need to pull every time
+
+~/Works/ImpactTech/kind$ kubectl cluster-info --context kind-kind
+Kubernetes control plane is running at https://127.0.0.1:36357
+CoreDNS is running at https://127.0.0.1:36357/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+docker exec -it kind-control-plane crictl images
+IMAGE                                      TAG                  IMAGE ID            SIZE
+docker.io/keras/alone                      latest               e194fbd643015       2.64GB
+docker.io/kindest/kindnetd                 v20210326-1e038dc5   6de166512aa22       54MB
+docker.io/library/dl_iris_dataset          latest               c9212fec1e517       178MB
+docker.io/rancher/local-path-provisioner   v0.0.14              e422121c9c5f9       13.4MB
+k8s.gcr.io/build-image/debian-base         v2.1.0               c7c6c86897b63       21.1MB
+k8s.gcr.io/coredns/coredns                 v1.8.0               296a6d5035e2d       12.9MB
+k8s.gcr.io/etcd                            3.4.13-0             0369cf4303ffd       86.7MB
+k8s.gcr.io/kube-apiserver                  v1.21.1              9162816021b10       127MB
+k8s.gcr.io/kube-controller-manager         v1.21.1              50f30f65d22b5       121MB
+k8s.gcr.io/kube-proxy                      v1.21.1              bb840f0a082a6       133MB
+k8s.gcr.io/kube-scheduler                  v1.21.1              b2149d9f128ce       51.9MB
+k8s.gcr.io/pause                           3.5                  ed210e3e4a5ba       301kB
+
+
+then have problem with git large file. that go.tar.gz was too large i shouldn't hv left it to be committed
+
+i didn't put kubernetes source in the same place as go
+so now i have to put it at ${GOPATH}/src/k8s.io/kubernetes
+have to git clone again!
+
+otherwise now kuberoot cannot find
+
+kind build node-image
+ERROR: error building node image: error finding kuberoot: could not find kubernetes source
+
+what about config.yaml? where is the current one? can check with kubectl config view
+which is from config file inside ${GOPATH}/src/k8s.io/kubernetes
+
+i have to do --config during kind create cluster to specify the configurations
+but what about the one that i already created the default?
+
+then what will node-image do? build kind-control-plane container 
+
+so now i have kubernetes built at 2 places; ImpactTech/kubernetes and ${HOME}/go/src/k8s.io/kubernetes
+
+once turn off the pc, kind-control-plane docker container doesn't turn off
+what was the run command?
+but kind is not there on host if i haven't set export GOPATH="$HOME/go" and PATH="$GOPATH/bin:$PATH"
+i did something wrong like export ${GOPATH}
+
+kubernetes node-image is being built with 'kind build node-image'
+which depends on kubernetes sources and upstream built
+which means i have to make kubernetes built works before using kind-customize image
+
+pimpwhippa@pimpwhippa-Aspire-E5-473G:~/Works/ImpactTech/kind/images$ kind get nodes
+kind-control-plane
+
+now i just need to docker-compose up
+
+
+
+
 
 
 
