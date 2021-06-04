@@ -1,0 +1,12 @@
+{
+  "base_url": "/",
+  "hostname": "0.0.0.0",
+  "notebook_dir": "/flask_jupyter_iris",
+  "password": false,
+  "pid": 8,
+  "port": 8888,
+  "secure": false,
+  "sock": "",
+  "token": "85016bd7ef1ac4b6002aa56b21887154c9885a737d983b88",
+  "url": "http://0.0.0.0:8888/"
+}

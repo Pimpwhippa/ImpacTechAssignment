@@ -149,6 +149,33 @@ kind-control-plane
 
 now i just need to docker-compose up
 
+no need to manually load docker images to each node like above
+i just need to compose pod, which is a set of containers that communicate with each otherwise
+so podwith5containers.yaml
+and then kubectl apply -f path/to/podwith5containers.yaml
+and then to check it kubectl get pod five-containers --output=yaml
+
+at first cannot load image because kubelet cannot find the images inside podwith5containers.yaml
+have to creat local registry with create_cluster_with_registry.sh script provided by kind 
+at create cluster. if i want both specific number of nodes and registry, have to say 
+already at create cluster. maybe adding prometheus have to do when?
+
+then i'd have to tag my own built images with 
+docker tag dl_iris_curl localhost:5000/dl_iris_curl
+then kubelet can find it and load image for me
+
+i set up storage as local volume
+docker volume create iris-clf-shared-data 
+i have to -v mnt as volume on my 4 containers to keep stuff i made
+
+first box i do curl iris_training.csv, iris_test.csv with a normal ubuntu image
+that run a script curl.sh at docker run
+the container will generate the file inside /data where
+docker run -it --name=iris_curl5 -v iris-clf-shared-data:/data dl_iris_curl
+
+download dl_iris_dataset doesn't need keras,so the image can be just ubuntu, small
+but next one would need keras in the image to be able to process the layers and model
+
 
 
 

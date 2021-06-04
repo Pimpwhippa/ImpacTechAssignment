@@ -1,0 +1,2 @@
+curl https://storage.googleapis.com/download.tensorflow.org/data/iris_training.csv > ../data/iris_training.csv
+curl https://storage.googleapis.com/download.tensorflow.org/data/iris_test.csv > ../data/iris_test.csv

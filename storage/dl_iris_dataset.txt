@@ -1,6 +1,3 @@
-
-docker build -t dl_iris_dataset .
-docker run -it --name=iris dl_iris_dataset
-#here if i -v ${PWD}:irisdataset, will it already be a remote storage 
-#i.e. on my host. will it be considered persistent? yes?
-docker exec -it iris bash
+docker volume create iris-clf-shared-data
+docker build -t dl_iris_curl .
+docker run -it --name=iris_curl5 -v iris-clf-shared-data:/data dl_iris_curl
