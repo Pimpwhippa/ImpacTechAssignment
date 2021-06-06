@@ -22,3 +22,10 @@ judgment include the most important and relevant metrics from the underlying Kub
 nodes and pods.
 5. Need to “wrap” the code from the TensorFlow guide into docker containers for the following
 tasks: download, training, optimize, evaluation, and prediction
+
+What's been done
+1. install go, kind, kubectl
+2. kind cluster create with command ./create_cluster_with_registry.sh
+3. kubectl apply -f pod/podwith5containers.yaml
+but what's in the pod, I have only made 1 container that curl iris_training.csv, iris_test.csv
+now I'm trying kubeflow and building pipeline and component
