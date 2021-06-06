@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import optimizers
 import train_model
+import datapreprocess
 #where to get train_dataset from?
 #model.trainable_variables อะไรเหนี่ย?
 
@@ -32,6 +33,7 @@ for epoch in range(num_epochs):
   epoch_accuracy = tf.keras.metrics.SparseCategoricalAccuracy()
 
   # Training loop - using batches of 32
+
   for x, y in train_dataset:
     # Optimize the model
     loss_value, grads = grad(model, x, y)

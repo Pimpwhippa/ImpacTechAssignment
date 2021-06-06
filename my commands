@@ -176,6 +176,36 @@ docker run -it --name=iris_curl5 -v iris-clf-shared-data:/data dl_iris_curl
 download dl_iris_dataset doesn't need keras,so the image can be just ubuntu, small
 but next one would need keras in the image to be able to process the layers and model
 
+well, now thinking how to connext box1 to box2 and so on? how to send variables between containers?
+why not use some platform that will make my life easier
+
+so here comes the hint that says MLflow, but actually looking at kubeflow 
+it's more my situation and more similar to how the project has been set up,
+looking at the job description, yes you use kubeflow, so kubeflow here i come!
+
+first understanding what is kubeflow and what's the difference with kubeflow pipeline SDK
+ofcourse it's the SDK I need, not the UI like in the documentation
+
+so first activate a conda environment. i choose docker image python:latest, 
+don't know if it's gonna bring me problems later
+pip3 install kfp --upgrade
+export PATH=$PATH:~/.local/bin
+root@1111fc286e97:/# which dsl-compile
+/usr/local/bin/dsl-compile
+
+web_downloader_op = kfp.components.load_component_from_url(
+    'https://raw.githubusercontent.com/kubeflow/pipelines/master/components/web/Download/component-sdk-v2.yaml')
+
+def my_pipeline(url: str):
+  web_downloader_task = web_downloader_op(url=url)
+  merge_csv_task = merge_csv(tar_data=web_downloader_task.outputs['data'])
+  # The outputs of the merge_csv_task can be referenced using the
+  # merge_csv_task.outputs dictionary: merge_csv_task.outputs['output_csv']
+
+มี web_downloader_op แล้วโว้ยยย
+
+ต่อไปกล่องที่สอง
+
 
 
 
