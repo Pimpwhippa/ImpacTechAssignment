@@ -13,9 +13,10 @@ from tensorflow.keras import layers
 def create_keras_model(input:csv, output:[Artifact], param):
 
 Use this method to load your component from a component.yaml path.
-create_step_get_lines = comp.load_component_from_text("""
-kfp.components.load_component_from_url:
+create_step_get_lines = comp.load_component_from_text("
+                      kfp.components.load_component_from_url:
 kfp.components.load_component_from_file:
+
 
 train_dataset_url = "https://storage.googleapis.com/download.tensorflow.org/data/iris_training.csv"
 

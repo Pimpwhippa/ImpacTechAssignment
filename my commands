@@ -207,8 +207,77 @@ def my_pipeline(url: str):
 ต่อไปกล่องที่สอง
 
 
+docker build -t kubeflowchandra .
+docker run -it --name=kubeshashank kubeflowchandra:latest
+pip3 install kfp --upgrade
+and now i have kubeflow and kubectl inside a docker container! (use alpine, apk add, curl no cache)
 
+forget about kubeflow in container. now i'm back on host
+pip list|grep kfp
+kfp                      1.6.3
+kfp-pipeline-spec        0.1.8
+kfp-server-api           1.6.0
 
+cannot connect pipeline SDK client
+client = kfp.Client() connection refused
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=3000): 
+Max retries exceeded with url: /apis/v1beta1/healthz 
+(Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7efed4d48a30>: 
+Failed to establish a new connection: [Errno 111] Connection refused'))
 
+and then i want to compile sample pipeline sequential.py
+dsl-compile --py [path/to/sequential] --output [path/to/sequential.tar.gz]
+Module not found
+ File "/home/pimpwhippa/Works/ImpactTech/mlpipeline/lib/python3.8/site-packages/kfp/compiler/main.py", line 90, in compile_pyfile
+    __import__(os.path.splitext(filename)[0])
+ModuleNotFoundError: No module named 'sequential'
+tried everywhere export DIR, ${DIR}/sequential.py never found sequential.py
 
+data parsing is the heart of pipeline, but still cannot find where the pipeline file is!!
 
+(mlpipeline) pimpwhippa@pimpwhippa-Aspire-E5-473G:~/Works/ImpactTech/mlpipeline$ ls
+bin  lib  pyvenv.cfg  sequential.py
+
+export DIR=[/home/pimpwhippa/Works/ImpactTech/mlpipeline]
+(mlpipeline) pimpwhippa@pimpwhippa-Aspire-E5-473G:~/Works/ImpactTech/mlpipeline/lib/python3.8/site-packages/kfp/compiler$ 
+cp ${DIR}/sequential.py .
+cp: cannot stat '[/home/pimpwhippa/Works/ImpactTech/mlpipeline]/sequential.py': No such file or directory
+
+i haven't told kubernetes that there's such a thing like kubeflow kpf exist
+so first i have to create a new Service kubeflow ขึ้นมา แล้วไปบอก and then tell kubectl
+to create pod for that no not pod, this time it's called Service
+kubectl apply -k /home/pimpwhippa/Works/ImpactTech/kubeflow/
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+
+and service has its own (DNS name, or IP address, or clusterIP??)
+
+since i haven't told kubernetes about kubeflow, when kubeflow kfp try to connect client=kfp.Client()
+got the error connection refused
+
+and then ofcourse if connection refused you cannot compile and run it,
+no way they will find your file!
+
+i escape the gcp commands! yahoo!
+i mean wuuuuuuhuuuuuwwwwwww!
+
+so since
+(mlpipeline) pimpwhippa@pimpwhippa-Aspire-E5-473G:~/Works/ImpactTech$ 
+kubectl apply -k /home/pimpwhippa/Works/ImpactTech/kubeflow/
+
+error: unable to find one of 'kustomization.yaml', 'kustomization.yml' or 
+'Kustomization' in directory '/home/pimpwhippa/Works/ImpactTech/kubeflow'
+
+็i need to go make that file. and to make that file you need to make another 3 files.
+kustomization, deploy, service, and configMap all .yaml file to tell kubenetes what to do
+and also have to install kustomize who encourages fork/build/rebase workflow
