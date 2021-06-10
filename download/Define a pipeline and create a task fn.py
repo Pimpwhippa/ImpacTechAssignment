@@ -1,6 +1,6 @@
 # Define a pipeline and create a task from a component:
 @dsl.pipeline(
-    name='my-pipeline',
+    name='my-first-pipeline',
     # You can optionally specify your own pipeline_root
     # pipeline_root='gs://my-pipeline-root/example-pipeline',
 )

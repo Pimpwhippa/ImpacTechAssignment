@@ -281,3 +281,22 @@ error: unable to find one of 'kustomization.yaml', 'kustomization.yml' or
 ็i need to go make that file. and to make that file you need to make another 3 files.
 kustomization, deploy, service, and configMap all .yaml file to tell kubenetes what to do
 and also have to install kustomize who encourages fork/build/rebase workflow
+
+turned out making files in kustomize was not needed
+in kubeflow site, they already made that file to be applied
+but it just need to be applied with -k --> --kustomize!
+kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic-pns?ref=$PIPELINE_VERSION"
+then set context
+
+kubectl config set-context iris-clf3 --namespace=kubeflow \
+>   --cluster=kind-iris-clf3 \
+>   --user=kind-iris-clf3
+
+then port-forwarding works
+kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80
+
+go to ui at localhost:8080
+not sure if this was needed
+kubectl apply -f kustomize/deployment.yaml
+
+now writing my pipeline.py, then compile, then upload pipeline to kubeflow ui
